@@ -1,0 +1,14 @@
+[debug] ----------------------------------------------------------------------
+[debug] Command:      /usr/bin/node /usr/bin/firebase serve
+[debug] CLI Version:  3.0.7
+[debug] Platform:     linux
+[debug] Node Version: v6.3.0
+[debug] Time:         Fri Sep 16 2016 12:21:09 GMT+0600 (NOVT)
+[debug] ----------------------------------------------------------------------
+[debug] 
+[info] Starting Firebase development server...
+[info] 
+[info] Project Directory: /home/sultanbaev/Dropbox/_Important/_001_shothub
+[info] Public Directory: ./
+[info] 
+[info] Server listening at: http://localhost:5000
