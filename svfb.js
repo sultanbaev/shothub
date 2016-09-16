@@ -1,8 +1,8 @@
 var SIGN_IN_TEMPLATE = '<center><div class="container"><div id="signIn" class="four columns signIn"><div>E-mail</div><input class="u-full-width" type="email" id="email"><div>Password</div><input class="u-full-width" type="password" id="password"><br><button id="btnSignIn" class="button button-primary u-full-width">Login</button></div></div></center>';
 
-var NO_LOGIN_HEAD = '<center><hr><font color="#AE81FF">stream</font> | <a id="clickonlogin"><font color="#75715E">login</font></a><hr><br></center>';
+var NO_LOGIN_HEAD = '<center><hr><a id="clickonlogin"><font color="#75715E">login</font></a><hr><br></center>';
 
-var LOGIN_HEAD = '<center><hr><font color="#AE81FF">stream</font> | <font color="#A6E22E">add</font> | <font color="#F92672">my favorite</font> | <a id="clickonlogout"><font color="#75715E">logout</font></a><hr><br></center>';
+var LOGIN_HEAD = '<center><hr><font color="#AE81FF">stream</font> | <font color="#F92672">favorite</font> | <font color="#A6E22E">add</font> | <a id="clickonlogout"><font color="#75715E">logout</font></a><hr><br></center>';
 
 //var POPUP_LOGIN = ''
 
@@ -23,12 +23,15 @@ var LOGIN_HEAD = '<center><hr><font color="#AE81FF">stream</font> | <font color=
     // Main html containers
     var container = document.createElement("div");
     var mainForm = document.getElementById('mainBody');
+    var div1 = document.getElementById('div1');
+    var loginHead = document.createElement("div");
     
 
     firebase.auth().onAuthStateChanged(firebaseUser => {
             if (firebaseUser) {
-                var div1 = document.getElementById('div1');
-                var loginHead = document.createElement("div");
+                
+                container.remove();
+                loginHead.remove();
                 loginHead.innerHTML = LOGIN_HEAD;
                 div1.appendChild(loginHead);
                 var btnLogOut = document.getElementById('clickonlogout');
@@ -38,15 +41,22 @@ var LOGIN_HEAD = '<center><hr><font color="#AE81FF">stream</font> | <font color=
                         firebase.auth().signOut();
                     });
             } else {
-                signIn(container,mainForm);  
-                var div1 = document.getElementById('div1');
-                var loginHead = document.createElement("div");
+                
+                
+                //div1.remove();
+                loginHead.remove();
                 loginHead.innerHTML = NO_LOGIN_HEAD;
-                div1.appendChild(loginHead); 
+                div1.appendChild(loginHead);
+                var btnLogIn = document.getElementById('clickonlogin');
+                btnLogIn.addEventListener('click', e => {
+                        signIn(container,mainForm);
+                        loginHead.remove();
+                        });
+                   
             }
     });
 
-
+//container.remove();
     
 }());
 
