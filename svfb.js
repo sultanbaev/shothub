@@ -1,5 +1,13 @@
 var SIGN_IN_TEMPLATE = '<center><div class="container"><div id="signIn" class="four columns signIn"><div>E-mail</div><input class="u-full-width" type="email" id="email"><div>Password</div><input class="u-full-width" type="password" id="password"><br><button id="btnSignIn" class="button button-primary u-full-width">Login</button></div></div></center>';
 
+var NO_LOGIN_HEAD = '<center><hr><font color="#AE81FF">stream</font> | <a id="clickonlogin"><font color="#75715E">login</font></a><hr><br></center>';
+
+var LOGIN_HEAD = '<center><hr><font color="#AE81FF">stream</font> | <font color="#A6E22E">add</font> | <font color="#F92672">my favorite</font> | <a id="clickonlogout"><font color="#75715E">logout</font></a><hr><br></center>';
+
+//var POPUP_LOGIN = ''
+
+//var STREAM_BLOCK = ''
+
 (function () {
     
     // Initialize Firebase
@@ -15,18 +23,26 @@ var SIGN_IN_TEMPLATE = '<center><div class="container"><div id="signIn" class="f
     // Main html containers
     var container = document.createElement("div");
     var mainForm = document.getElementById('mainBody');
-    var btnLogOut = document.getElementById('clickonlogout');
-    console.log(mainForm);
-    // Listener for Auth (sessions)
-    btnLogOut.addEventListener('click', e => {
-        firebase.auth().signOut();
-    });
+    
 
     firebase.auth().onAuthStateChanged(firebaseUser => {
             if (firebaseUser) {
-                console.log('blh'); /////////////////
+                var div1 = document.getElementById('div1');
+                var loginHead = document.createElement("div");
+                loginHead.innerHTML = LOGIN_HEAD;
+                div1.appendChild(loginHead);
+                var btnLogOut = document.getElementById('clickonlogout');
+                    console.log(mainForm);
+                    // Listener for Auth (sessions)
+                    btnLogOut.addEventListener('click', e => {
+                        firebase.auth().signOut();
+                    });
             } else {
-                signIn(container,mainForm);   
+                signIn(container,mainForm);  
+                var div1 = document.getElementById('div1');
+                var loginHead = document.createElement("div");
+                loginHead.innerHTML = NO_LOGIN_HEAD;
+                div1.appendChild(loginHead); 
             }
     });
 
