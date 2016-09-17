@@ -1,7 +1,7 @@
 var SIGN_IN_TEMPLATE = '<center><div class="container"><div id="signIn" class="four columns signIn"><div>E-mail</div><input class="u-full-width" type="email" id="email"><div>Password</div><input class="u-full-width" type="password" id="password"><br><button id="btnSignIn" class="button button-primary u-full-width">Login</button></div></div></center>';
 var NO_LOGIN_HEAD = '<center><hr><a id="clickonlogin"><font color="#F8F8F0">login</font></a><hr><br></center>';
 var LOGIN_HEAD = '<center><hr><font color="#AE81FF">stream</font> | <font color="#F92672">favorites</font> | <a id="clickonaddnew"><font color="#A6E22E">add</font></a> | <a id="clickonlogout"><font color="#75715E">logout</font></a><hr><br></center>';
-var UPLOAD_IMG = '<center><progress value="0" max="100" id="uploader">0%</progress><input type="file" value="upload" id="fileButton" /></center>';
+var UPLOAD_IMG = '<center><input type="file" value="upload" id="fileButton" /> <progress value="0" max="100" id="uploader">0%</progress></center>';
 
 // got it!
 // add to favorites (N)
@@ -58,7 +58,7 @@ var UPLOAD_IMG = '<center><progress value="0" max="100" id="uploader">0%</progre
                     btnAddNew.addEventListener('click', e => {
                         loginHead.remove();
                         loginHead.innerHTML = UPLOAD_IMG;
-                        div1.appendChild(loginHead);
+                        mainForm.appendChild(loginHead);
                 
 
 // ----------------------------------------------------------------------------------------- Load img to gs
