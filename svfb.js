@@ -1,7 +1,11 @@
 var SIGN_IN_TEMPLATE = '<center><div class="container"><div id="signIn" class="four columns signIn"><div>E-mail</div><input class="u-full-width" type="email" id="email"><div>Password</div><input class="u-full-width" type="password" id="password"><br><button id="btnSignIn" class="button button-primary u-full-width">Login</button></div></div></center>';
 var NO_LOGIN_HEAD = '<center><hr><a id="clickonlogin"><font color="#F8F8F0">login</font></a><hr><br></center>';
-var LOGIN_HEAD = '<center><hr><font color="#AE81FF">stream</font> | <font color="#F92672">favorites</font> | <a id="clickonaddnew"><font color="#A6E22E">add</font></a> | <a id="clickonlogout"><font color="#75715E">logout</font></a><hr><br></center>';
-var UPLOAD_IMG = '<center><input type="file" value="upload" id="fileButton" /> <progress value="0" max="100" id="uploader">0%</progress></center>';
+var LOGIN_HEAD = '<center><hr><a id="clickonstream"><font color="#AE81FF">stream</font></a> | <a id="clickonaddnew"><font color="#A6E22E">add</font></a> | <a id="clickonlogout"><font color="#75715E">logout</font></a><hr><br></center>';
+
+//var UPLOAD_IMG = '<center><input type="file" value="upload" id="fileButton" accept="image/x-png, image/jpeg" /> <progress value="0" max="100" id="uploader">0%</progress></center>';
+var UPLOAD_IMG = '<center><input type="file" value="upload" id="fileButton" accept="image/x-png, image/jpeg" /> <progress value="0" max="100" id="uploader">0%</progress></center><br><button id="canceladd" class="button button-primary u-full-width">Cancel</button>';
+
+var MAIN_INFO = 'main info is here';
 
 // got it!
 // add to favorites (N)
@@ -22,6 +26,7 @@ var UPLOAD_IMG = '<center><input type="file" value="upload" id="fileButton" /> <
 (function () {
     
     // ---------------------------------------------------------------------------------- Initialize Firebase
+
     const config = {
     apiKey: "AIzaSyAcnyNPASW9asiPP8HyE41dmUDE9lT_Mww",
     authDomain: "shothub-e534f.firebaseapp.com",
@@ -32,33 +37,56 @@ var UPLOAD_IMG = '<center><input type="file" value="upload" id="fileButton" /> <
     firebase.initializeApp(config);
 
     // --------------------------------------------------------------------------------- Main html containers
+
     var container = document.createElement("div");
-    var mainForm = document.getElementById('mainBody');
-    var div1 = document.getElementById('div1');
     var loginHead = document.createElement("div");
+
+    var mainForm = document.getElementById('mainBody');
+    var headmenu = document.getElementById('headmenu');
+    
     
 
     firebase.auth().onAuthStateChanged(firebaseUser => {
             if (firebaseUser) {
-                // ------------------------------------------------------------------------------------ Login
+
+                // ------------------------------------------------------------------- Logout button is hit
+
                 container.remove();
                 loginHead.remove();
                 loginHead.innerHTML = LOGIN_HEAD;
-                div1.appendChild(loginHead);
+                headmenu.appendChild(loginHead);
                 var btnLogOut = document.getElementById('clickonlogout');
                     console.log(mainForm);
-                    // Listener for Auth (sessions)
+
                     btnLogOut.addEventListener('click', e => {
                         firebase.auth().signOut();
+                        //mainForm.remove();
                     });
 
-// ----------------------------------------------------------------------------------------- Add new popup
-                    
+                    // --------------------------------------------------------------- Add new button is hit
+
                     var btnAddNew = document.getElementById('clickonaddnew');
                     btnAddNew.addEventListener('click', e => {
-                        loginHead.remove();
-                        loginHead.innerHTML = UPLOAD_IMG;
-                        mainForm.appendChild(loginHead);
+                        //loginHead.remove();
+                        //loginHead.innerHTML = UPLOAD_IMG;
+                        mainForm.innerHTML = UPLOAD_IMG;
+                        //mainForm.appendChild(loginHead);
+                        
+                        // ---------------------------------------------- Cancel button on Add screen is hit 
+
+                        var btnCancelAdd = document.getElementById('canceladd');
+                        btnCancelAdd.addEventListener('click', e =>{
+                           mainForm.innerHTML = MAIN_INFO; 
+                        });
+                        
+
+                        // ------------------------------------------------------------ Stream button is hit
+
+                        var btnStream = document.getElementById('clickonstream');
+                        btnStream.addEventListener('click', e =>{
+                           mainForm.innerHTML = MAIN_INFO; 
+                        });
+                        
                 
 
 // ----------------------------------------------------------------------------------------- Load img to gs
@@ -68,7 +96,7 @@ var fileButton = document.getElementById('fileButton');
 
 fileButton.addEventListener('change', function(e){
     var file = e.target.files[0];
-    var storageRef = firebase.storage().ref(file.name);
+    var storageRef = firebase.storage().ref('shots/' + file.name);
     var task = storageRef.put(file);
     task.on('state_changed',
 
@@ -80,10 +108,12 @@ fileButton.addEventListener('change', function(e){
         },
 
         function error(err){
+            alert("Error!");
 
         },
 
         function complete(){
+            alert("Done!");
 
         }
 
@@ -94,17 +124,26 @@ fileButton.addEventListener('change', function(e){
 
             } else {
                                 
-                // -------------------------------------------------------------------------------- No login
-                loginHead.remove();
+                // ---------------------------------------------------------------------- Login button is hit
+
+                //loginHead.remove();
                 loginHead.innerHTML = NO_LOGIN_HEAD;
-                div1.appendChild(loginHead);
+                //mainForm.innerHTML = NO_LOGIN_HEAD;
+                mainForm.innerHTML = MAIN_INFO;
+                headmenu.appendChild(loginHead);
                 var btnLogIn = document.getElementById('clickonlogin');
                 btnLogIn.addEventListener('click', e => {
+                        mainForm.innerHTML = SIGN_IN_TEMPLATE;
                         signIn(container,mainForm);
-                        loginHead.remove();
+                        //loginHead.remove(); 
+                        //container.remove();
+                        //mainForm.remove();
+                        //mainForm.innerHTML = SIGN_IN_TEMPLATE;
                         });
                    
             }
+
+            mainForm.innerHTML = MAIN_INFO;
     });
 
 // ----------------------------------------------------------------------------------------- Load img from gs
@@ -128,29 +167,30 @@ var shotRef = storageRef.child('001.jpg');
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Sign In Function
+// ----------------------------------------------------------------------------------------- Sign In Function
+
 function signIn(container,mainForm) {
-    // Get Elements
-    container.remove();
-    container.innerHTML = SIGN_IN_TEMPLATE;
+
+    //container.remove();
+    //container.innerHTML = SIGN_IN_TEMPLATE;
     mainForm.appendChild(container);
 
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
     const btnSignIn = document.getElementById('btnSignIn');
 
-    // Add Event Listener
     btnSignIn.addEventListener('click', e =>{
-        // Get email & pass
+
         const emailAddress = emailInput.value;
         const password = passwordInput.value;
         const auth = firebase.auth();
 
-        // Sig In
         const promise = auth.signInWithEmailAndPassword(emailAddress, password);
         promise.catch(e => console.log(e.message));
 
     });
+
+    //mainForm.innerHTML = MAIN_INFO;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
