@@ -2,8 +2,8 @@ var SIGN_IN_TEMPLATE = '<center><div class="container"><div id="signIn" class="f
 var NO_LOGIN_HEAD = '<center><hr><a id="clickonlogin"><font color="#F8F8F0">login</font></a><hr><br></center>';
 var LOGIN_HEAD = '<center><hr><a id="clickonstream"><font color="#AE81FF">stream</font></a> | <a id="clickonaddnew"><font color="#A6E22E">add</font></a> | <a id="clickonlogout"><font color="#75715E">logout</font></a><hr><br></center>';
 
-//var UPLOAD_IMG = '<center><input type="file" value="upload" id="fileButton" accept="image/x-png, image/jpeg" /> <progress value="0" max="100" id="uploader">0%</progress></center>';
-var UPLOAD_IMG = '<center><input type="file" value="upload" id="fileButton" accept="image/x-png, image/jpeg" /> <progress value="0" max="100" id="uploader">0%</progress></center><br><button id="canceladd" class="button button-primary u-full-width">Cancel</button>';
+//var UPLOAD_IMG = '<center><input type="file" value="upload" id="fileButton" accept="image/x-png, image/jpeg" multiple /> <progress value="0" max="100" id="uploader">0%</progress></center><br><button id="canceladd" class="button button-primary u-full-width">Cancel</button>';
+var UPLOAD_IMG = '<center><input type="file" value="upload" id="choosefilesbutton" accept="image/x-png, image/jpeg" multiple /> <progress value="0" max="100" id="uploader">0%</progress></center><br><button id="onemore" class="button button-primary u-full-width">Add more files</button> <button id="canceladd" class="button button-primary u-full-width">Cancel</button>';
 
 var MAIN_INFO = 'main info is here';
 
@@ -86,15 +86,29 @@ var MAIN_INFO = 'main info is here';
                         btnStream.addEventListener('click', e =>{
                            mainForm.innerHTML = MAIN_INFO; 
                         });
+
+                        //
+                        //var btnAddMore = document.getElementById('onemore');
+                        //btnAddMore.addEventListener('click', e =>{
+                        //  var oneMore = document.createElement("div");
+                        //   mainForm.appendChild(oneMore);
+                        //   oneMore.innerHTML = UPLOAD_IMG; 
+                        //});
+                        //
                         
                 
 
 // ----------------------------------------------------------------------------------------- Load img to gs
 
 var uploader = document.getElementById('uploader');
-var fileButton = document.getElementById('fileButton');
+var chooseFilesButton = document.getElementById('choosefilesbutton');
 
-fileButton.addEventListener('change', function(e){
+chooseFilesButton.addEventListener('change', function(e){
+
+//
+//    for (var i = 0; i < files.length; i++) {
+//
+
     var file = e.target.files[0];
     var storageRef = firebase.storage().ref('shots/' + file.name);
     var task = storageRef.put(file);
@@ -118,6 +132,11 @@ fileButton.addEventListener('change', function(e){
         }
 
         )
+
+    //
+    //}
+    //
+
 });
 
 });
